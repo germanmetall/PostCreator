@@ -1,0 +1,32 @@
+@import './_var.scss';
+
+* {
+  box-sizing: border-box;
+  font-family: Inter;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.border {
+  border: 1px solid darken($base-color, 20%);
+}
+
+.btn {
+  width: fit-content;
+  padding: 8px 12px;
+  background-color: #00000020;
+  color: #e0e0e0;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: .3s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #{$base-color}a0;
+    color: #fff;
+  }
+}
