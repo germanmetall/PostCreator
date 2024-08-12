@@ -1,6 +1,7 @@
 <template>
   <div
-    class="flex flex-col gap-y-4 w-96 h-fit m-auto backdrop-blur-md px-8 py-6 bg-[#00004040] border-2 border-[#e0e0e0] rounded-tr-3xl rounded-bl-3xl text-white"
+    class="flex flex-col gap-y-4 w-96 h-fit m-auto backdrop-blur-md px-8 py-6 border-2 rounded-lg custom-bg text-slate-50 duration-300"
+    :class="{ 'border-[#b0b0b0]': started == false, 'border-yellow-400': started == true && success != true, 'border-green-400': success == true, 'border-red-400': error == true }"
   >
     <label
       class="flex flex-col gap-y-1 capitalize text-xl"
@@ -8,7 +9,7 @@
     >
       {{ item }}
       <input
-        class="border w-full px-2 py-1 opacity-75 duration-300 hover:opacity-100 focus:opacity-100 active:opacity-100 rounded text-black"
+        class="border w-full px-2 py-1 custom-bg duration-300 rounded text-slate-50 hover-lighten-base-color"
         :type="item == 'password' ? 'password' : 'text'"
         :value="creds[item]"
         @input="creds[item] = $event.target.value"
@@ -16,11 +17,11 @@
     </label>
     <div class="flex flex-row gap-x-4 justify-center">
       <div
-        class="btn border"
+        class="btn text-slate-50 custom-border hover-lighten-base-color"
         @click="reg"
       >Register</div>
       <div
-        class="btn border"
+        class="btn text-slate-50 custom-border hover-lighten-base-color"
         @click="login"
       >Log in</div>
     </div>
@@ -30,15 +31,78 @@
 <script setup>
 import { useAuthStore } from '@/stores/auth';
 import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toast-notification';
 
 const store = useAuthStore(),
-  creds = reactive({ name: '', password: '' })
+  router = useRouter(),
+  creds = reactive({ name: '', password: '' }),
+  started = ref(false),
+  success = ref(false),
+  error = ref(false)
 
-const reg = () => {
-  store.register(creds)
+const reset = () => {
+  started.value = true;
+  success.value = false;
+  error.value = false;
+
+  useToast().open({
+    message: 'Wait...',
+    type: 'info'
+  })
 }
 
-const login = () => {
-  store.login(creds)
+const reg = async () => {
+  if (creds.name.length == 0 || creds.password.length == 0) return useToast().open({
+    message: 'Name or password is missing',
+    type: 'error'
+  })
+
+  reset();
+  let res
+
+  try {
+    res = await store.register(creds)
+    useToast().open({
+      message: 'Register successful!<br/>Redirecting to home page.'
+    })
+    success.value = true;
+    setTimeout(() => router.push('/'), 3000)
+  }
+  catch (e) {
+    useToast().open({
+      message: e,
+      type: 'error'
+    })
+    started.value = false;
+    error.value = true;
+  }
+}
+
+const login = async () => {
+  if (creds.name.length == 0 || creds.password.length == 0) return useToast().open({
+    message: 'Name or password is missing',
+    type: 'error'
+  })
+
+  reset();
+  let res
+
+  try {
+    res = await store.login(creds)
+    success.value = true;
+    useToast().open({
+      message: 'Login successful!<br/>Redirecting to home page.'
+    })
+    setTimeout(() => router.push('/'), 3000)
+  }
+  catch (e) {
+    useToast().open({
+      message: e,
+      type: 'error'
+    })
+    started.value = false;
+    error.value = true;
+  }
 }
 </script>

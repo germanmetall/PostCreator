@@ -1,11 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Auth from '@/views/Auth.vue'
 import Settings from '@/views/Settings.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -27,7 +27,9 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   const store = useAuthStore()
-  if(to.name !== 'auth' && !store.currentUser) return '/auth'
+  store.getCurrentUser()
+  if (+(new Date()) > +store.currentUser?.logoutTime) return store.logout()
+  if (to.name !== 'auth' && Object.keys(store.currentUser).length == 0) return '/auth'
 })
 
 export default router

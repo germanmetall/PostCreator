@@ -4,10 +4,18 @@ import { useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', () => {
   const currentUser = ref(),
-    router = useRouter()
+    timing = 3000
+
+  function getCurrentUser() {
+    let res = JSON.parse(localStorage.getItem('currentUser'))
+    
+    if(!res) return;
+
+    currentUser.value = res;
+    return res;
+  }
 
   async function register({ name, password }) {
-    console.log(name, password)
     return new Promise((res, rej) => {
       try {
         let body = {},
@@ -15,13 +23,15 @@ export const useAuthStore = defineStore('auth', () => {
         if (prevUsersRecords) body = prevUsersRecords
         body[name] = password
         // TODO here will be an API call
-        console.log(body);
         localStorage.setItem('users', JSON.stringify(body))
         currentUser.value = name;
-        router.push('/')
-        return res(true)
+        localStorage.setItem('currentUser', JSON.stringify({
+          name,
+          logoutTime: +new Date() + 1000 * 60 * 10
+        }))
+        setTimeout(() => res(true), timing)
       } catch (e) {
-        return rej(e)
+        setTimeout(() => rej(e), timing)
       }
     })
   }
@@ -35,13 +45,16 @@ export const useAuthStore = defineStore('auth', () => {
 
         if (users[name] == password) {
           currentUser.value = users[name];
-          router.push('/')
-          return res(true);
+          localStorage.setItem('currentUser', JSON.stringify({
+            name,
+            logoutTime: +new Date() + 1000 * 60 * 10
+          }))
+          setTimeout(() => res(true), timing)
         }
         else if (users.hasOwnProperty(name)) throw 'Wrong password'
         else throw 'User not found'
       } catch (e) {
-        return rej(e)
+        setTimeout(() => rej(e), timing)
       }
     })
   }
@@ -49,10 +62,10 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout() {
     return new Promise(res => {
       currentUser.value = null;
-      useRouter().push('/auth')
-      return res(true);
+      localStorage.removeItem('currentUser')
+      setTimeout(() => res(true), timing)
     })
   }
 
-  return { currentUser, register, login, logout }
+  return { currentUser, getCurrentUser, register, login, logout }
 })

@@ -10,23 +10,31 @@ body {
   padding: 0;
 }
 
-.border {
-  border: 1px solid darken($base-color, 20%);
+.custom-border {
+  border: 1px solid lighten($base-color, 15%);
+}
+
+.custom-bg {
+  background-color: #{$base-color}10;
 }
 
 .btn {
   width: fit-content;
   padding: 8px 12px;
   background-color: #00000020;
-  color: #e0e0e0;
   font-size: 20px;
   font-weight: 500;
   border-radius: 8px;
   transition: .3s;
   cursor: pointer;
+}
 
-  &:hover {
-    background-color: #{$base-color}a0;
-    color: #fff;
+.hover-lighten-base-color {
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: lighten($base-color, 35%);
+    color: #101010;
   }
 }
