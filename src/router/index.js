@@ -28,7 +28,10 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const store = useAuthStore()
   store.getCurrentUser()
-  if (+(new Date()) > +store.currentUser?.logoutTime) return store.logout()
+  if (store.currentUser && +(new Date()) > +store.currentUser?.logoutTime) {
+    store.logout()
+    return '/auth'
+  }
   if (to.name !== 'auth' && Object.keys(store.currentUser || {}).length == 0) return '/auth'
 })
 

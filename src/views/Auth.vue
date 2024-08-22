@@ -9,7 +9,7 @@
     >
       {{ item }}
       <input
-        class="border w-full px-2 py-1 custom-bg duration-300 rounded text-slate-50 hover-lighten-base-color"
+        class="border w-full px-2 py-1 custom-bg duration-300 rounded text-slate-50 font-light hover-lighten-base-color"
         :type="item == 'password' ? 'password' : 'text'"
         :value="creds[item]"
         @input="creds[item] = $event.target.value"
@@ -17,11 +17,11 @@
     </label>
     <div class="flex flex-row gap-x-4 justify-center">
       <div
-        class="btn text-slate-50 custom-border hover-lighten-base-color"
+        class="btn text-slate-50 border custom-border hover-lighten-base-color"
         @click="reg"
       >Register</div>
       <div
-        class="btn text-slate-50 custom-border hover-lighten-base-color"
+        class="btn text-slate-50 border custom-border hover-lighten-base-color"
         @click="login"
       >Log in</div>
     </div>
@@ -67,7 +67,7 @@ const reg = async () => {
       message: 'Register successful!<br/>Redirecting to home page.'
     })
     success.value = true;
-    setTimeout(() => router.push('/'), 3000)
+    setTimeout(() => router.push('/'), 1000)
   }
   catch (e) {
     useToast().open({
@@ -94,7 +94,7 @@ const login = async () => {
     useToast().open({
       message: 'Login successful!<br/>Redirecting to home page.'
     })
-    setTimeout(() => router.push('/'), 3000)
+    setTimeout(() => router.push('/'), 1000)
   }
   catch (e) {
     useToast().open({

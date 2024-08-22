@@ -1,15 +1,14 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', () => {
   const currentUser = ref(),
-    timing = 3000
+    timing = 1000
 
   function getCurrentUser() {
     let res = JSON.parse(localStorage.getItem('currentUser'))
-    
-    if(!res) return;
+
+    if (!res) return;
 
     currentUser.value = res;
     return res;
@@ -25,15 +24,19 @@ export const useAuthStore = defineStore('auth', () => {
         // TODO here will be an API call
         localStorage.setItem('users', JSON.stringify(body))
         currentUser.value = name;
-        localStorage.setItem('currentUser', JSON.stringify({
-          name,
-          logoutTime: +new Date() + 1000 * 60 * 10
-        }))
+        setCurrentUser(name);
         setTimeout(() => res(true), timing)
       } catch (e) {
         setTimeout(() => rej(e), timing)
       }
     })
+  }
+
+  function setCurrentUser(name) {
+    localStorage.setItem('currentUser', JSON.stringify({
+      name,
+      logoutTime: +new Date() + 1000 * 60 * 60
+    }))
   }
 
   async function login({ name, password }) {
@@ -45,10 +48,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         if (users[name] == password) {
           currentUser.value = users[name];
-          localStorage.setItem('currentUser', JSON.stringify({
-            name,
-            logoutTime: +new Date() + 1000 * 60 * 10
-          }))
+          setCurrentUser(name);
           setTimeout(() => res(true), timing)
         }
         else if (users.hasOwnProperty(name)) throw 'Wrong password'

@@ -3,13 +3,13 @@
     <div
       class="w-full min-w-0 lg:min-w-[600px] min-h-40 border-2 border-[#b0b0b0] flex flex-col gap-6 px-6 py-4 rounded-md backdrop-blur-md custom-bg"
     >
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-row w-fit overflow-auto gap-2">
         Images
-        <template v-if="images">
+        <template v-if="store.textToImage?.length">
           <img
-            v-for="img in images"
-            :src="img.src"
-            class="w-56 h-56 object-contain"
+            v-for="img in store.textToImage"
+            :src="img"
+            class="w-56 pb-2 aspect-square object-cover rounded"
           />
         </template>
         <template v-else>
@@ -23,13 +23,13 @@
       <div class="flex flex-col gap-2">
         Text
         <textarea
-          class="w-full h-20 border-2 border-[#b0b0b0] px-2 py-1 custom-bg duration-300 rounded-md text-slate-50 hover-lighten-base-color"
+          class="w-full h-20 border-2 border-[#b0b0b0] px-2 py-1 custom-bg duration-300 rounded-md text-slate-50 font-light hover-lighten-base-color"
           v-model="text"
         ></textarea>
       </div>
 
       <div
-        class="btn text-slate-50 custom-border hover-lighten-base-color"
+        class="btn text-slate-50 border custom-border hover-lighten-base-color"
         @click="generate"
       >
         Generate!
@@ -43,17 +43,27 @@
           <option v-for="option in ['Telegram', 'Instagram', 'Facebook', 'LinkedIn', 'Twitter']">{{ option }}</option>
         </select>
       </div>
+      <br/>
+      <span class="font-light">[DOES NOT WORK YET]</span>
     </div>
+
+    <Teleport to="body">
+      <TextToImg />
+    </Teleport>
   </div>
 </template>
 
 <script setup>
+import { useAPI } from '@/composables/API';
 import { ref } from 'vue';
 import { useToast } from 'vue-toast-notification';
+import TextToImg from "@/components/modals/TextToImg.vue"
+import { useModalsStore } from '@/stores/modals';
 
 const text = ref(),
   images = ref(),
-  options = ref()
+  options = ref(),
+  store = useModalsStore()
 
 const addImage = async () => {
   useToast().open({
@@ -63,13 +73,26 @@ const addImage = async () => {
 }
 
 const generate = async () => {
-  useToast().open({
-    message: 'Е, не клікай',
-    type: 'info'
-  })
+  if (!text.value && !images.value) return useToast().open({
+    message: 'Е, нічо немає',
+    type: 'error'
+  });
+  else if (!text.value && images.value) return useToast().open({
+    message: 'Е, цього поки не буде, тільки text-to-image',
+    type: 'error'
+  });
+
+  textToImages()
 }
 
-const textToImages = async () => { }
+const textToImages = async () => {
+  console.log(text.value)
+  store.open('TextToImg')
+  return;
+  let resp = await useAPI().textToImage(text.value);
+  let body = await resp.json();
+  console.log(resp, body);
+}
 
 const imagesToText = async () => { }
 
