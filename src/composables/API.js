@@ -6,7 +6,9 @@ export const useAPI = () => {
     return await fetch(`${path}/images/generations`, {
       method: 'POST',
       body: JSON.stringify({
-        prompt
+        prompt,
+        n: 2,
+        size: '256x256'
       }),
       headers: {
         'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,

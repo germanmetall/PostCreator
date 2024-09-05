@@ -12,7 +12,7 @@
       <span class="text-2xl text-center font-medium">Choose generated images</span>
       <div class="grid grid-cols-2 gap-2 justify-center items-center min-h-96 max-h-[50dvh] overflow-y-auto">
         <img
-          v-for="(item, counter) in imagesMock"
+          v-for="(item, counter) in store.imagesToChooseFrom"
           :src="item"
           @click="select(counter)"
           class="w-96 aspect-square object-cover border-8 border-transparent rounded-lg duration-300 cursor-pointer"
@@ -34,13 +34,7 @@ import { ref } from 'vue';
 import { useToast } from 'vue-toast-notification';
 
 const selectedIndexes = ref([]),
-  store = useModalsStore(),
-  imagesMock = ref([
-    'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-    'https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg',
-    'https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-169994-674010.jpg&fm=jpg',
-    'https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630'
-  ])
+  store = useModalsStore()
 
 const select = (index) => {
   if (selectedIndexes.value.includes(index)) selectedIndexes.value = selectedIndexes.value.filter(el => el !== index)
@@ -56,8 +50,8 @@ const add = () => {
   else {
     store.textToImage = []
     selectedIndexes.value.forEach(el => {
-      store.addImage(imagesMock.value[el])
-      console.log(imagesMock.value[el])
+      store.addImage(store.imagesToChooseFrom[el])
+      console.log(store.imagesToChooseFrom[el])
     })
     console.log(store.textToImage)
     store.open();

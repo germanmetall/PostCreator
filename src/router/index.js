@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Auth from '@/views/Auth.vue'
 import Settings from '@/views/Settings.vue'
 import { useAuthStore } from '@/stores/auth'
+import Telegram from '@/views/preview/Telegram.vue'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/settings',
       name: 'settings',
       component: Settings
+    },
+    {
+      path: '/preview/telegram',
+      name: 'preview-telegram',
+      component: Telegram
     }
   ]
 })

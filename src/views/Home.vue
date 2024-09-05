@@ -43,8 +43,11 @@
           <option v-for="option in ['Telegram', 'Instagram', 'Facebook', 'LinkedIn', 'Twitter']">{{ option }}</option>
         </select>
       </div>
-      <br/>
-      <span class="font-light">[DOES NOT WORK YET]</span>
+      <br />
+      <div
+        class="cursor-pointer font-light"
+        @click="openPreview"
+      >Open preview in new page</div>
     </div>
 
     <Teleport to="body">
@@ -59,11 +62,28 @@ import { ref } from 'vue';
 import { useToast } from 'vue-toast-notification';
 import TextToImg from "@/components/modals/TextToImg.vue"
 import { useModalsStore } from '@/stores/modals';
+import { usePreviewsStore } from '@/stores/previews';
+import { useRouter } from 'vue-router';
 
 const text = ref(),
   images = ref(),
   options = ref(),
-  store = useModalsStore()
+  store = useModalsStore(),
+  router = useRouter()
+
+const openPreview = () => {
+  // for Telegram
+  usePreviewsStore().setPreview('telegram', {
+    channelIcon: store.textToImage[0],
+    channelName: 'TEST_NAME',
+    images: store.textToImage,
+    text: `TEST_TEXT<br/><br/>It also supports <i>this</i> <b>kind</b> <code>of things</code>.`,
+    postId: 'TEST_POST_ID',
+    channelId: 'TEST_CHANNEL_NAME',
+    dateTime: new Date().toLocaleString()
+  })
+  router.push('preview/telegram')
+}
 
 const addImage = async () => {
   useToast().open({
@@ -87,11 +107,11 @@ const generate = async () => {
 
 const textToImages = async () => {
   console.log(text.value)
-  store.open('TextToImg')
-  return;
   let resp = await useAPI().textToImage(text.value);
   let body = await resp.json();
   console.log(resp, body);
+  useModalsStore().fillImagesToChooseFrom(body.data.map(el => el.url))
+  store.open('TextToImg')
 }
 
 const imagesToText = async () => { }

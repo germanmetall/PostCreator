@@ -5,11 +5,11 @@
 
     <div
       class="flex flex-row gap-4 justify-between text-xl font-light"
-      v-if="currentUser"
+      v-if="currentUser && $route.path !== '/auth'"
     >
       <div
         class="cursor-pointer"
-        @click="store.logout"
+        @click="logout"
       >
         <span class="font-medium">{{ currentUser.name }}</span>
         <span> (Logout)</span>
@@ -33,8 +33,14 @@
 <script setup>
 import { useAuthStore } from '@/stores/auth';
 import { computed } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 
 const store = useAuthStore(),
-  currentUser = computed(() => store.currentUser)
+  currentUser = computed(() => store.currentUser),
+  router = useRouter()
+
+const logout = async () => {
+  let success = await store.logout();
+  if (success) router.push('/auth');
+}
 </script>

@@ -16,19 +16,21 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function register({ name, password }) {
     return new Promise((res, rej) => {
-      try {
-        let body = {},
-          prevUsersRecords = JSON.parse(localStorage.getItem('users'))
-        if (prevUsersRecords) body = prevUsersRecords
-        body[name] = password
-        // TODO here will be an API call
-        localStorage.setItem('users', JSON.stringify(body))
-        currentUser.value = name;
-        setCurrentUser(name);
-        setTimeout(() => res(true), timing)
-      } catch (e) {
-        setTimeout(() => rej(e), timing)
-      }
+      setTimeout(() => {
+        try {
+          let body = {},
+            prevUsersRecords = JSON.parse(localStorage.getItem('users'))
+          if (prevUsersRecords) body = prevUsersRecords
+          body[name] = password
+          // TODO here will be an API call
+          localStorage.setItem('users', JSON.stringify(body))
+          currentUser.value = name;
+          setCurrentUser(name);
+          res(true)
+        } catch (e) {
+          rej(e)
+        }
+      }, timing)
     })
   }
 
@@ -41,29 +43,33 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login({ name, password }) {
     return new Promise((res, rej) => {
-      try {
-        // TODO here will be an API call
-        let users = JSON.parse(localStorage.getItem('users'))
-        if (!users) throw 'No users are here'
+      setTimeout(() => {
+        try {
+          // TODO here will be an API call
+          let users = JSON.parse(localStorage.getItem('users'))
+          if (!users) throw 'No users are here'
 
-        if (users[name] == password) {
-          currentUser.value = users[name];
-          setCurrentUser(name);
-          setTimeout(() => res(true), timing)
+          if (users[name] == password) {
+            currentUser.value = users[name];
+            setCurrentUser(name);
+            res(true)
+          }
+          else if (users.hasOwnProperty(name)) throw 'Wrong password'
+          else throw 'User not found'
+        } catch (e) {
+          rej(e)
         }
-        else if (users.hasOwnProperty(name)) throw 'Wrong password'
-        else throw 'User not found'
-      } catch (e) {
-        setTimeout(() => rej(e), timing)
-      }
+      }, timing)
     })
   }
 
   async function logout() {
     return new Promise(res => {
-      currentUser.value = null;
-      localStorage.removeItem('currentUser')
-      setTimeout(() => res(true), timing)
+      setTimeout(() => {
+        currentUser.value = null;
+        localStorage.removeItem('currentUser')
+        res(true)
+      }, timing)
     })
   }
 
