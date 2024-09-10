@@ -1,17 +1,22 @@
 <template>
-  <div class="flex flex-col lg:flex-row gap-6 mx-20 lg:mx-auto my-10 max-w-screen-lg text-slate-50 font-medium text-xl">
+  <div
+    class="flex flex-col md:flex-row gap-6 w-11/12 md:w-auto mx-auto md:mx-20 md:mx-auto my-10 max-w-screen-lg text-slate-50 font-medium text-xl"
+  >
     <div
-      class="w-full min-w-0 lg:min-w-[600px] min-h-40 border-2 border-[#b0b0b0] flex flex-col gap-6 px-6 py-4 rounded-md backdrop-blur-md custom-bg"
+      class="w-full min-w-0 md:min-w-[600px] min-h-40 border-2 border-[#b0b0b0] flex flex-col gap-6 px-6 py-4 rounded-md backdrop-blur-md custom-bg"
     >
-      <div class="flex flex-row w-fit overflow-auto gap-2">
+      <div class="flex flex-col w-fit overflow-auto gap-2">
         Images
-        <template v-if="store.textToImage?.length">
+        <div
+          v-if="store.textToImage?.length"
+          class="flex flex-row gap-[inherit] overflow-auto w-fit"
+        >
           <img
             v-for="img in store.textToImage"
             :src="img"
             class="w-56 pb-2 aspect-square object-cover rounded"
           />
-        </template>
+        </div>
         <template v-else>
           <div
             class="w-56 h-56 border-2 border-[#b0b0b0] rounded-xl custom-bg flex justify-center items-center text-6xl cursor-pointer"
@@ -36,18 +41,20 @@
       </div>
     </div>
 
-    <div class="w-full h-40 border-2 border-[#b0b0b0] px-6 py-4 rounded-md backdrop-blur-md custom-bg">
-      <div class="">
+    <div class="w-full h-fit border-2 border-[#b0b0b0] px-6 py-4 rounded-md backdrop-blur-md custom-bg">
+      <!--
+      <div>
         Preview for
         <select class="px-4 py-2 text-[#101010] rounded-md mx-4">
           <option v-for="option in ['Telegram', 'Instagram', 'Facebook', 'LinkedIn', 'Twitter']">{{ option }}</option>
         </select>
       </div>
       <br />
+      -->
       <div
-        class="cursor-pointer font-light"
+        class="cursor-pointer"
         @click="openPreview"
-      >Open preview in new page</div>
+      >Open telegram preview in new page</div>
     </div>
 
     <Teleport to="body">

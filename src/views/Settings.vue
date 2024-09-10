@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col lg:flex-row gap-6 mx-20 lg:mx-auto my-10 max-w-screen-lg text-slate-50">
+  <div class="flex flex-col w-11/12 md:w-fit md:flex-row gap-6 mx-auto my-10 max-w-screen-lg text-slate-50">
     <div
-      class="w-full min-w-0 lg:min-w-[600px] min-h-40 border-2 border-[#b0b0b0] flex flex-col gap-6 px-6 py-4 rounded-md backdrop-blur-md custom-bg"
+      class=" min-w-0 md:min-w-[600px] min-h-40 border-2 border-[#b0b0b0] flex flex-col gap-6 px-6 py-4 rounded-md backdrop-blur-md custom-bg"
     >
       <span class="text-3xl text-center font-medium">Settings</span>
 

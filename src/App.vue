@@ -15,7 +15,7 @@ import { RouterView } from 'vue-router'
   display: flex;
   flex-direction: column;
   width: 100dvw;
-  height: 100dvh;
+  min-height: 100dvh;
   //background-color: darken(#232E37, 5%);
 
   --s: 123px;

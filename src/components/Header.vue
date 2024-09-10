@@ -1,10 +1,10 @@
 <template>
   <div
-    class="flex flex-row justify-between items-center w-full h-20 py-3 px-8 text-slate-50 custom-bg backdrop-blur-md">
+    class="flex flex-col md:flex-row justify-between items-center w-full h-fit mg:h-20 py-3 px-4 md:px-8 text-slate-50 custom-bg backdrop-blur-md">
     <div class="text-3xl font-medium">Post Creator</div>
 
     <div
-      class="flex flex-row gap-4 justify-between text-xl font-light"
+      class="flex flex-row flex-wrap gap-2 md:gap-4 justify-between items-center w-full md:w-auto text-xl font-light order-2 md:order-[unset] mt-4 md:mt-0"
       v-if="currentUser && $route.path !== '/auth'"
     >
       <div

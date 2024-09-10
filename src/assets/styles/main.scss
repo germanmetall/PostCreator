@@ -19,14 +19,24 @@ body {
 }
 
 .btn {
-  width: fit-content;
-  padding: 8px 12px;
+  width: 100%;
+  padding: 6px 10px;
   background-color: #00000020;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: .3s;
+  text-align: center;
   cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .btn {
+    width: fit-content;
+    font-size: 20px;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
 }
 
 .hover-lighten-base-color {

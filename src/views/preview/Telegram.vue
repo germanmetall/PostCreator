@@ -1,5 +1,5 @@
 <template>
-  <div class="fade-in">
+  <div class="fade-in w-11/12 md:w-fit mx-auto">
     <TelegramPreview />
   </div>
 </template>

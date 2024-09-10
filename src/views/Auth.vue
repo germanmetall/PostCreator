@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col gap-y-4 w-96 h-fit m-auto backdrop-blur-md px-8 py-6 border-2 rounded-lg custom-bg text-slate-50 duration-300"
+    class="flex flex-col gap-y-2 md:gap-y-4 w-11/12 md:w-96 h-fit m-auto backdrop-blur-md px-8 py-6 border-2 rounded-lg custom-bg text-slate-50 duration-300"
     :class="{ 'border-[#b0b0b0]': started == false, 'border-yellow-400': started == true && success != true, 'border-green-400': success == true, 'border-red-400': error == true }"
   >
     <label
@@ -15,7 +15,7 @@
         @input="creds[item] = $event.target.value"
       >
     </label>
-    <div class="flex flex-row gap-x-4 justify-center">
+    <div class="flex flex-col md:flex-row gap-2 md:gap-4 justify-center items-center mt-4 md:mt-0">
       <div
         class="btn text-slate-50 border custom-border hover-lighten-base-color"
         @click="reg"
